@@ -3,11 +3,11 @@ issue_number: 9
 type: blog
 title: 上海新天地健身房怎么选：加伍磅、超级猩猩、247
 slug: xintiandi-gyms
-description: 比较新天地周边加伍磅、超级猩猩与247候选，先分清训练形式再核查门店。
+description: 比较新天地周边加伍磅、超级猩猩与24/7 FITNESS，按训练形式、通勤与合同筛选。
 created_date: '2026-11-06'
 update_date: '2026-11-06'
 published_at: '2026-11-06T05:08:17Z'
-updated_at: '2026-11-06T05:08:17Z'
+updated_at: '2026-11-06T05:15:25Z'
 tags: []
 ---
 
