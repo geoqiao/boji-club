@@ -197,7 +197,9 @@
   .comment-actions { display: flex; align-items: center; gap: 20px; margin-top: 21px; }
   .comment-actions > a { font-size: 11px; }
   .comment-actions .button { min-height: 40px; font-size: 11px; padding: 8px 15px; }
+  .comment-actions [data-load-comments][hidden] { display: none; }
   .comment-status { margin-top: 12px; }
+  [data-comments][data-loading="true"] [data-comment-thread] { min-height: 180px; }
   .utterances { max-width: 100%; }
 }
 @layer interactive {

@@ -7,6 +7,8 @@
   adaptNavigation();
   mobile.addEventListener('change', adaptNavigation);
 
+  const commentCleanup = new WeakMap();
+
   document.addEventListener('click', (event) => {
     if (!(event.target instanceof Element)) return;
     const playButton = event.target.closest('button[data-bilibili]');
@@ -34,29 +36,61 @@
       const thread = section.querySelector('[data-comment-thread]');
       const status = section.querySelector('[data-comment-status]');
       if (!thread || !status) return;
+      commentCleanup.get(section)?.();
+      thread.replaceChildren();
       section.dataset.loading = 'true';
+      loadButton.hidden = false;
       loadButton.disabled = true;
       loadButton.textContent = '正在加载评论…';
       status.textContent = '正在连接 GitHub 评论。若网络受限，可使用上方链接直接参与讨论。';
+
       const script = document.createElement('script');
       script.src = 'https://utteranc.es/client.js';
       script.setAttribute('repo', 'geoqiao/boji-club');
       script.setAttribute('issue-number', issueNumber);
       script.setAttribute('theme', 'github-light');
-      script.setAttribute('label', 'comment');
       script.crossOrigin = 'anonymous';
       script.async = true;
-      script.addEventListener('load', () => {
-        loadButton.hidden = true;
-        status.textContent = '评论由 GitHub 提供；登录 GitHub 后即可参与。加载较慢时，可以通过上方链接打开讨论。';
+      let settled = false;
+      const observer = new MutationObserver(() => {
+        thread.querySelectorAll('iframe').forEach((frame) => {
+          frame.loading = 'eager';
+        });
       });
-      script.addEventListener('error', () => {
+      function cleanup() {
+        observer.disconnect();
+        window.removeEventListener('message', onMessage);
+        window.clearTimeout(timer);
+        script.removeEventListener('error', fail);
+        commentCleanup.delete(section);
+      }
+      function fail() {
+        if (settled) return;
+        settled = true;
+        cleanup();
         section.dataset.loading = 'false';
+        loadButton.hidden = false;
         loadButton.disabled = false;
         loadButton.textContent = '重新加载评论';
-        status.textContent = '评论服务暂时无法连接，请重试，或点击上方链接前往 GitHub。';
+        status.textContent = '评论服务暂时无法连接，可重试或前往 GitHub。';
         thread.replaceChildren();
-      });
+      }
+      function onMessage(message) {
+        if (settled || message.origin !== 'https://utteranc.es') return;
+        const frame = thread.querySelector('iframe');
+        const data = message.data;
+        if (!frame || message.source !== frame.contentWindow || !data || data.type !== 'resize' || !Number.isFinite(data.height) || data.height <= 0) return;
+        settled = true;
+        cleanup();
+        section.dataset.loading = 'false';
+        loadButton.hidden = true;
+        status.textContent = '评论由 GitHub 提供；登录 GitHub 后即可参与。';
+      }
+      const timer = window.setTimeout(fail, 12000);
+      commentCleanup.set(section, cleanup);
+      observer.observe(thread, { childList: true, subtree: true });
+      window.addEventListener('message', onMessage);
+      script.addEventListener('error', fail);
       thread.append(script);
     }
   });
