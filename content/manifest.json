@@ -1,0 +1,64 @@
+{
+  "export_version": 1,
+  "repository": "geoqiao/boji-club",
+  "blog": [
+    {
+      "issue_number": 11,
+      "slug": "leg-training",
+      "path": "blog/leg-training.md"
+    },
+    {
+      "issue_number": 10,
+      "slug": "strength-vs-hypertrophy",
+      "path": "blog/strength-vs-hypertrophy.md"
+    },
+    {
+      "issue_number": 9,
+      "slug": "xintiandi-gyms",
+      "path": "blog/xintiandi-gyms.md"
+    },
+    {
+      "issue_number": 8,
+      "slug": "cardio-training",
+      "path": "blog/cardio-training.md"
+    },
+    {
+      "issue_number": 7,
+      "slug": "shoulder-training",
+      "path": "blog/shoulder-training.md"
+    },
+    {
+      "issue_number": 6,
+      "slug": "back-training",
+      "path": "blog/back-training.md"
+    },
+    {
+      "issue_number": 5,
+      "slug": "chest-training",
+      "path": "blog/chest-training.md"
+    },
+    {
+      "issue_number": 4,
+      "slug": "weekly-plan",
+      "path": "blog/weekly-plan.md"
+    },
+    {
+      "issue_number": 3,
+      "slug": "weights-and-sets",
+      "path": "blog/weights-and-sets.md"
+    },
+    {
+      "issue_number": 2,
+      "slug": "first-workout",
+      "path": "blog/first-workout.md"
+    },
+    {
+      "issue_number": 1,
+      "slug": "boji-spirit",
+      "path": "blog/boji-spirit.md"
+    }
+  ],
+  "ideas": [],
+  "about": null,
+  "skipped_issues": []
+}

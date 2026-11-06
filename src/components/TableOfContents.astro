@@ -1,0 +1,9 @@
+---
+interface Props { toc: { id: string; text: string; level: number }[] }
+const { toc } = Astro.props;
+---
+<aside class="page-toc" aria-label="本页目录">
+  <div class="toc-sticky"><p class="eyebrow">ON THIS PAGE</p><h2>这一页，聊什么</h2>
+  <nav><ul>{toc.map(item => <li class:list={{ 'toc-nested': item.level > 2 }}><a href={`#${item.id}`}>{item.text}</a></li>)}<li><a href="#discussion">一起聊聊</a></li></ul></nav>
+  <div class="toc-reminder"><span aria-hidden="true">↗</span><p>知识用来行动，<br />进步留给时间。</p></div></div>
+</aside>

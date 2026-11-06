@@ -1,0 +1,33 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import Comments from '../../components/Comments.astro';
+import { posts, type Post } from '../../lib/content';
+import { sections } from '../../lib/navigation';
+export function getStaticPaths() { return posts.map(post => ({ params: { slug: post.slug }, props: { post } })); }
+interface Props { post: Post }
+const { post } = Astro.props;
+const ordered = [...new Set(sections.flatMap(section => section.slugs))].map(slug => posts.find(item => item.slug === slug)).filter((item): item is Post => !!item);
+const index = ordered.findIndex(item => item.slug === post.slug);
+const previous = index > 0 ? ordered[index - 1] : undefined;
+const next = index >= 0 ? ordered[index + 1] : undefined;
+const section = sections.find(section => section.slugs.includes(post.slug));
+const wordCount = post.markdown.replace(/\s/g, '').length;
+const minutes = Math.max(1, Math.ceil(wordCount / 400));
+function displayDate(value: string) { const date = new Date(value); return Number.isNaN(date.getTime()) ? value : date.toISOString().slice(0, 10); }
+---
+<SiteLayout title={post.title} description={post.description} article>
+  <div class="reading-layout">
+    <main id="main-content" class="article-main">
+      <nav class="breadcrumb" aria-label="当前位置"><a href="/">首页</a><span aria-hidden="true">/</span><span>{section?.title ?? '学习手册'}</span></nav>
+      <header class="article-header"><p class="eyebrow"><span class="tiny-square"></span>{section?.title ?? 'BOJI FIELD NOTES'}</p><h1>{post.title}</h1><p class="article-description">{post.description}</p><div class="article-meta"><span>阅读约 {minutes} 分钟</span><span aria-hidden="true">·</span><span>更新于 <time datetime={post.updateDate}>{displayDate(post.updateDate)}</time></span><a href={`https://github.com/geoqiao/boji-club/issues/${post.issueNumber}`} target="_blank" rel="noopener noreferrer">查看原文 ↗</a></div></header>
+      <details class="mobile-toc"><summary>本页目录</summary><nav aria-label="移动端本页目录"><ul>{post.toc.map(item => <li class:list={{ 'toc-nested': item.level > 2 }}><a href={`#${item.id}`}>{item.text}</a></li>)}</ul></nav></details>
+      <article class="prose" set:html={post.html} />
+      <aside class="article-source"><span aria-hidden="true">↗</span><div><strong>来源与更新</strong><p>正文引用来源随文列出。本文同步自 <a href={`https://github.com/geoqiao/boji-club/issues/${post.issueNumber}`} target="_blank" rel="noopener noreferrer">GitHub Issue #{post.issueNumber}</a>；发现资料更新或有不同实践，欢迎在下方补充。</p></div></aside>
+      <div class="article-note">这是一份持续更新的学习手册。训练和饮食请结合自身情况；出现疼痛或不适时及时停止，必要时咨询专业人士。</div>
+      <nav class="article-pagination" aria-label="上下篇">{previous ? <a href={previous.path}><span>← 上一篇</span><strong>{previous.title}</strong></a> : <a href="/"><span>← 回到起点</span><strong>薄肌俱乐部首页</strong></a>}{next && <a class="next-article" href={next.path}><span>下一篇 →</span><strong>{next.title}</strong></a>}</nav>
+      <Comments issueNumber={post.issueNumber} />
+    </main>
+    <TableOfContents toc={post.toc} />
+  </div>
+</SiteLayout>

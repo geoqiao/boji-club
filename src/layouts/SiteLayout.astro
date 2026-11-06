@@ -1,0 +1,31 @@
+---
+import '../styles/global.css';
+import Sidebar from '../components/Sidebar.astro';
+import Search from '../components/Search.astro';
+import { site } from '../lib/site';
+interface Props { title?: string; description?: string; article?: boolean }
+const { title, description = site.description, article = false } = Astro.props;
+const pageTitle = title ? `${title} · ${site.title}` : `${site.title} · 把训练，放进日常`;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+---
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{pageTitle}</title><meta name="description" content={description} /><link rel="canonical" href={canonical} />
+  <meta property="og:type" content={article ? 'article' : 'website'} /><meta property="og:title" content={pageTitle} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:site_name" content={site.title} /><meta property="og:locale" content="zh_CN" />
+  <meta name="twitter:card" content="summary" /><meta name="theme-color" content="#173d32" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <script is:inline src="/site.js" defer></script><script is:inline src="/search.js" defer></script>
+</head>
+<body class:list={{ 'article-page': article }}>
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <Sidebar />
+  <div class="site-body">
+    <header class="topbar"><a href="/">一份写给普通人的训练与生活手册</a><div><span class="topbar-status"><span class="status-dot"></span>持续学习，持续更新</span><a href={site.repo.startsWith('http') ? site.repo : `https://github.com/${site.repo}`} target="_blank" rel="noopener noreferrer" aria-label="在 GitHub 查看薄肌俱乐部">GitHub <span aria-hidden="true">↗</span></a></div></header>
+    <slot />
+    <footer class="site-footer"><span>薄肌俱乐部 <span class="footer-slash">/</span> BOJI CLUB</span><p>健康是起点，长期坚持是方向。</p><a href="#main-content">回到顶部 ↑</a></footer>
+  </div>
+  <Search />
+</body>
+</html>
