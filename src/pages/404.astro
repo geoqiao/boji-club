@@ -1,4 +1,6 @@
 ---
-import { site } from "../lib/site";
+import SiteLayout from '../layouts/SiteLayout.astro';
 ---
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><title>页面未找到 · {site.title}</title><meta name="robots" content="noindex" /><style>body{background:#f7f6ef;color:#193b31;font-family:system-ui,sans-serif;max-width:42rem;margin:15vh auto;padding:2rem}a{color:inherit}</style></head><body><p>BOJI CLUB / 404</p><h1>这一页还没找到。</h1><p>内容可能已经调整，回到目录继续看看。</p><a href="/">返回薄肌俱乐部 →</a></body></html>
+<SiteLayout title="页面未找到" noindex>
+  <main id="main-content" class="empty-state"><p class="section-label">404</p><h1>这一页还没找到。</h1><p>内容可能已经调整，回到首页继续看看。</p><a class="button button-primary" href="/">返回首页 <span aria-hidden="true">→</span></a></main>
+</SiteLayout>

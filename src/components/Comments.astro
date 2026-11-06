@@ -4,8 +4,7 @@ const { issueNumber } = Astro.props;
 const issueUrl = `https://github.com/geoqiao/boji-club/issues/${issueNumber}`;
 ---
 <section class="discussion" id="discussion" aria-labelledby="discussion-heading" data-comments data-issue-number={issueNumber}>
-  <p class="eyebrow">THE CLUB, TOGETHER</p>
-  <h2 id="discussion-heading">你的经验，也值得被听见。</h2>
+  <h2 id="discussion-heading">一起讨论</h2>
   <p>有疑问、有实践，或发现需要更新的地方？欢迎在这篇文章对应的 GitHub Issue 中交流。</p>
   <div class="comment-actions"><button class="button button-outline" data-load-comments type="button">加载评论 <span aria-hidden="true">↓</span></button><a href={issueUrl} target="_blank" rel="noopener noreferrer">前往 GitHub 讨论 ↗</a></div>
   <p class="comment-status" data-comment-status role="status"></p><div data-comment-thread></div>

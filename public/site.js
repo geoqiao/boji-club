@@ -1,6 +1,6 @@
 (() => {
   const menu = document.querySelector('.navigation-disclosure');
-  const mobile = window.matchMedia('(max-width: 760px)');
+  const mobile = window.matchMedia('(max-width: 960px)');
   function adaptNavigation() {
     if (menu instanceof HTMLDetailsElement) menu.open = !mobile.matches;
   }

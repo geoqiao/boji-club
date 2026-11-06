@@ -1,20 +1,17 @@
 ---
 import { posts } from '../lib/content';
 import { sections } from '../lib/navigation';
-import Brand from './Brand.astro';
 const { currentPath = Astro.url.pathname } = Astro.props;
 ---
 <aside class="sidebar" aria-label="学习导航">
-  <div class="sidebar-top"><Brand /><button class="search-trigger" data-open-search aria-label="搜索知识库"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4 4"/></svg><span>搜索知识库</span><kbd>⌘ K</kbd></button></div>
   <details class="navigation-disclosure" open>
     <summary>学习目录 <span aria-hidden="true">＋</span></summary>
-    <nav class="chapter-nav">
-      <a class:list={['nav-home', { active: currentPath === '/' }]} href="/" aria-current={currentPath === '/' ? 'page' : undefined}><span aria-hidden="true">⌂</span> 俱乐部首页</a>
-      {sections.map((section, i) => <section class="nav-section">
-        <h2><span>{String(i + 1).padStart(2, '0')}</span>{section.title}</h2>
+    <nav class="chapter-nav" aria-label="全部指南">
+      <a class="nav-home" href="/">← 返回首页</a>
+      {sections.map(section => <section class="nav-section">
+        <h2>{section.title}</h2>
         <ul>{section.slugs.map(slug => posts.find(post => post.slug === slug)).filter(Boolean).map(post => post && <li><a href={post.path} class:list={{ active: currentPath.replace(/\/$/, '') === post.path.replace(/\/$/, '') }} aria-current={currentPath.replace(/\/$/, '') === post.path.replace(/\/$/, '') ? 'page' : undefined}>{post.title}</a></li>)}</ul>
       </section>)}
     </nav>
   </details>
-  <div class="sidebar-note"><span class="status-dot"></span>把训练，放进日常。<p>练得适量，吃得正常，<br />慢慢变成更有力的自己。</p><a href="https://github.com/geoqiao/boji-club" target="_blank" rel="noopener noreferrer">在 GitHub 一起完善 <span aria-hidden="true">↗</span></a></div>
 </aside>
